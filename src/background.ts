@@ -1,50 +1,50 @@
-chrome.tabs.onUpdated.addListener(function(_, changeInfo, tab) {
-  // Check for URL and make sure the tab is fully loaded
-  if (tab?.url?.includes('meet.google.com') && changeInfo.status === 'complete') {
-    console.log('Google Meet session detected:', tab.url);
-    // You can potentially inject scripts here
+function generateUUID() {
+  return crypto.randomUUID();
+}
 
-    chrome.runtime.sendMessage({ type: 'meet' });
-  }
+// Function to prompt the user for a name
+function promptForName() {
+  const name = "aaa:w";
+  return name;
+}
+
+// Create the context menu item upon installation
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    id: "saveHighlightedText",
+    title: "Save Highlighted Text",
+    contexts: ["selection"],
+  });
 });
 
-chrome.runtime.onMessage.addListener((message, sender) => {
-  if (message.type === 'START_RECORDING' && sender.tab) {
-    chrome.desktopCapture.chooseDesktopMedia(['audio'], sender.tab, (streamId) => {
-      if (!streamId) {
-        console.error('No stream ID returned, user likely cancelled the prompt.');
-        return;
-      }
-      // You now have a streamId which can be used to capture audio
-      navigator.mediaDevices.getUserMedia({
-        audio: true,
-      }).then((stream) => {
-        console.log('Audio stream obtained:', stream);
-        // Handle the stream, such as sending it to a server or storing it locally
-        const mediaRecorder = new MediaRecorder(stream);
-        let chunks: BlobPart[] = [];
-
-        mediaRecorder.ondataavailable = function(e) {
-          chunks.push(e.data);
-        };
-
-        mediaRecorder.onstop = function(_) {
-          const blob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
-          chunks = [];
-
-          console.log('Audio available at:', blob);
-          // Here you can save the blob or upload it to a server
-        };
-
-        mediaRecorder.start();
-        // Example: stop recording after 30 seconds
-        setTimeout(() => {
-          mediaRecorder.stop();
-        }, 30000);
-      }).catch((error) => {
-        console.error('Error obtaining audio:', error);
-      });
+// Handle context menu item clicks
+chrome.contextMenus.onClicked.addListener((info) => {
+  console.log(info);
+  if (info.menuItemId === "saveHighlightedText") {
+    const selectedText = encodeURIComponent(info.selectionText || "");
+    chrome.windows.create({
+      url: `dist/popup.html?text=${selectedText}`,
+      type: "popup",
+      width: 400,
+      height: 300,
     });
+    // const selectedText = info.selectionText;
+    // const name = promptForName();
+    //
+    // if (name) {
+    //   const uuid = generateUUID();
+    //   const entry = { name, text: selectedText, uuid };
+    //
+    //   // Retrieve existing entries from storage
+    //   chrome.storage.local.get({ savedTexts: [] }, (data) => {
+    //     const savedTexts = data.savedTexts;
+    //     savedTexts.push(entry);
+    //
+    //     // Save the updated entries back to storage
+    //     chrome.storage.local.set({ savedTexts }, () => {
+    //       console.log("Text saved:", entry);
+    //     });
+    //   });
+    // }
   }
-  return true;
 });

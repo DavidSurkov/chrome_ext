@@ -45,7 +45,7 @@ function App() {
           placeholder="Name your prompt"
         />
         <div>{selectedText}</div>
-        <button onClick={onSubmit} disabled={!name}>
+        <button onClick={onSubmit} disabled={!!name}>
           Submit
         </button>
       </div>
@@ -71,7 +71,6 @@ function App() {
             return (
               <div>
                 <span>{promptItem.name}</span>
-                <span>{promptItem.prompt}</span>
               </div>
             );
           })
