@@ -4,9 +4,8 @@
   "description": "Managing prompts in ai",
   "version": "0.1.0",
   "permissions": ["scripting", "storage", "contextMenus"],
-  "host_permissions": ["https://meet.google.com/*"],
   "action": {
-    "default_popup": "dist/popup.html"
+    "default_popup": "popup.html"
   },
   "icons": {
     "16": "public/bookmark_icon16.png",
@@ -14,8 +13,7 @@
     "128": "public/bookmark_icon128.png"
   },
   "background": {
-    "service_worker": "dist/background.js",
+    "service_worker": "background.js",
     "type": "module"
   }
 }
-

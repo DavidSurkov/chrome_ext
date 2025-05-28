@@ -23,7 +23,7 @@ chrome.contextMenus.onClicked.addListener((info) => {
   if (info.menuItemId === "saveHighlightedText") {
     const selectedText = encodeURIComponent(info.selectionText || "");
     chrome.windows.create({
-      url: `dist/popup.html?text=${selectedText}`,
+      url: `popup.html?text=${selectedText}`,
       type: "popup",
       width: 400,
       height: 300,

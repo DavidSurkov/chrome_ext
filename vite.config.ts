@@ -10,7 +10,6 @@ export default defineConfig({
       input: {
         background: resolve(__dirname, "src", "background.ts"), // Ensures background.ts is an entry point
         popup: resolve(__dirname, "popup.html"), // Handles popup
-        // options: resolve(__dirname, 'public', 'options.html') // Handles options page if you have one
       },
       output: {
         format: "esm", // Sets the module format; change as needed
@@ -22,4 +21,3 @@ export default defineConfig({
     },
   },
 });
-
