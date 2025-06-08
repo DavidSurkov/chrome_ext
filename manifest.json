@@ -3,7 +3,7 @@
   "name": "Prompt master",
   "description": "Managing prompts in ai",
   "version": "0.1.0",
-  "permissions": ["scripting", "storage", "contextMenus"],
+  "permissions": ["scripting", "storage", "contextMenus", "activeTab"],
   "action": {
     "default_popup": "popup.html"
   },
@@ -15,5 +15,13 @@
   "background": {
     "service_worker": "background.js",
     "type": "module"
+  },
+  "commands": {
+    "autocomplete_prompt": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Z"
+      },
+      "description": "Complete prompt"
+    }
   }
 }
